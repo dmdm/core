@@ -31,7 +31,7 @@ describe('ngb-dropdown', () => {
      }));
 
   it('should be open initially if open expression is true', injectAsync([TestComponentBuilder], (tcb) => {
-       const html = `<div ngbDropdown [open]="true"></div>`;
+       const html = `<div ngbDropdown [is-open]="true"></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -42,7 +42,7 @@ describe('ngb-dropdown', () => {
      }));
 
   it('should toggle open class', injectAsync([TestComponentBuilder], (tcb) => {
-       const html = `<div ngbDropdown [open]="isOpen"></div>`;
+       const html = `<div ngbDropdown [is-open]="isOpen"></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
@@ -65,9 +65,11 @@ describe('ngb-dropdown', () => {
      }));
 
   it('should allow toggling dropdown from outside', injectAsync([TestComponentBuilder], (tcb) => {
+       // Need to disable auto-close, otherwise the click on the button would
+       // count as an outside click that closes the menu.
        const html = `
-      <button (click)="drop.open = !drop.open">Toggle</button>
-      <div ngbDropdown #drop="ngbDropdown"></div>`;
+       <button (click)="drop.isOpen = !drop.isOpen">Toggle</button>
+       <div ngbDropdown #drop="ngbDropdown" auto-close="disabled"></div>`;
 
        return tcb.overrideTemplate(TestComponent, html).createAsync(TestComponent).then((fixture) => {
          fixture.detectChanges();
